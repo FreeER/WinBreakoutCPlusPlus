@@ -16,6 +16,7 @@ int randVlo(char v)
 {
     const int range_arr[8] = {-6, -5, -4, -3, 3, 4, 5, 6};
 
+    // TODO (ebob): this is not really needed anymore
     /** srand must be called from outside this function else
         the sequence starts over again with a small shift. **/
     // srand(GetTickCount());

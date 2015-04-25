@@ -36,7 +36,18 @@ int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance,
     }
 
     /**   make the window visible on the screen   **/
-    ShowWindow (hwnd, nCmdShow);
+    ShowWindow(hwnd, nCmdShow);
+
+/**   some debugging code   **/
+/**   with the following statements a Debug build target
+      allows us to use printf and cout to display data     **/
+#ifdef _DEBUG
+    if(!AllocConsole()){
+        MessageBox(NULL, _T(" can not create console window "),
+                         _T(" WinBreakoutC++ "), MB_OK);
+    }
+    freopen("CONOUT$","wb",stdout);  // reopen stout handle as console window output
+#endif
 
     /**   get our windows rectangle so we can size things   **/
     GetClientRect(hwnd, &mwinRect);
@@ -51,9 +62,13 @@ int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance,
     *   make the paddle              *
     *   y position, length, height   *
     **********************************/
-    // TODO:  this need to be from top with a re-sizable window
+    // TODO:  this needs to be from top with a re-sizable window
     createPaddle(mwinRect.bottom - 60, 40, 10);
 
+   /***************************
+    *   make the brick wall   *
+    ***************************/
+    createWall(0);
 
     /**   run the message loop                        **/
     /**   It will run until GetMessage() returns 0.   **/

@@ -10,14 +10,20 @@
 
 /**   include our programs declarations   **/
 #include "breakout.h"
+#include <iostream>
 
-/**   declare some global object variables   **/
-theBALL ballInfo;    // persistent ball information
+
+/**   define some global object variables   **/
+tHEBALL ballInfo;    // persistent ball information
 RECT mwinRect;    // main window rectangle
 RECT ballRect;    // ball rectangle
 RECT ballRectInvaild;    // ball rectangle for future and past positions
                          // needed to redraw only where needed
 RECT textRect;    // text rectangle
+
+/**   the brink array   **/
+tHEBRICK infobrick[50];    // 50 bricks
+
 
 /**   making paddleRect a pointer to heap memory     **/
 /**   is pointless but demonstrative                 **/
@@ -29,8 +35,10 @@ RECT paddleRectInvaild;    // rectangle need to for paddle redraw
 POINTS mpoint_x;    // POINTS structure to relay mouse data to paddle
 
 
+
+
 /**   need to keep track of paddle length beyond it's creation   **/
-/**   maybe a paddle info structure like ball                    **/
+/**   maybe a paddle info structure like ball, but for now       **/
 int paddlelength = 0;
 
 
@@ -112,7 +120,6 @@ void playSound(int sound){
         break;
         default:;
     }
-
 }
 
 /**   make the ball   **/
@@ -157,6 +164,26 @@ void createPaddle(int posy, int length, int height){
 
 }
 
+/**   make a brick   **/
+tHEBRICK createBrick(int x, int y, int length, int height,
+                                   COLORREF pen, COLORREF brush){
+
+    tHEBRICK abrick;
+    abrick.pen = pen;
+    abrick.brush = brush;
+    abrick.rcBrick.left = x;
+    abrick.rcBrick.top = y;
+    abrick.rcBrick.right= x + length;
+    abrick.rcBrick.bottom = y + height;
+
+    return abrick;
+}
+
+/**  make the brick wall   **/
+void createWall(int x){
+
+    infobrick[0] = createBrick( 10, 10, 30, 10, bO_DDGRAY, bO_RED);
+}
 
 
 /**   update paddle rectangle when ever mouse moves   **/
@@ -184,6 +211,10 @@ void updateGame(HWND hwnd){
 
     /**   MS's Offset Rectangle function make moving the rectangle easy   **/
     OffsetRect(&ballRect, ballInfo.vx, ballInfo.vy);
+
+#ifdef _DEBUG
+    printf("x = %d  y = %d\n", ballRect.left, ballRect.right);
+#endif
 
     /**   copy new ball rectangle   **/
     ballRectInvaild = ballRect;
@@ -287,7 +318,7 @@ void drawText(HDC hdc, LPCTSTR tsText, COLORREF color){
     /**   you can do this without the rectangle     **/
     /**   but only one line at a time               **/
     textRect.left = (mwinRect.right - width) / 2 ;
-    textRect.top = 60;
+    textRect.top = 150;  // how far down the window the text starts
     textRect.right = textRect.left + width;
     textRect.bottom = textRect.top + height;
 
@@ -360,6 +391,28 @@ void drawPaddle(HDC hdc, COLORREF pen, COLORREF fill){
      }
 }
 
+void drawWall(HDC hdc){
+
+    COLORREF lastpen = NULL;
+    COLORREF lastbrush =  NULL;
+
+    SelectObject(hdc, GetStockObject(DC_PEN));
+    SelectObject(hdc, GetStockObject(DC_BRUSH));
+    lastpen = SetDCPenColor(hdc, infobrick[0].pen);
+    lastbrush = SetDCBrushColor(hdc, infobrick[0].brush);
+
+
+    Rectangle(hdc,
+            infobrick[0].rcBrick.left,      // int nLeftRect
+            infobrick[0].rcBrick.top,       // int nTopRect
+            infobrick[0].rcBrick.right,     // int nRightRect
+            infobrick[0].rcBrick.bottom);   // int nBottomRect
+
+    SetDCPenColor(hdc, lastpen);
+    SetDCBrushColor(hdc, lastbrush);
+
+}
+
 /**   add rectangles to our window's update region   **/
 void setUpdateRegion(HWND hwnd){
     InvalidateRect(hwnd, &ballRectInvaild, TRUE);
@@ -416,6 +469,11 @@ void refreshWindow(HWND hwnd, LPCTSTR lpOptionalText){
     *********************/
     drawBall(hdc, NULL, bO_RED);    // draw a black ball
 
+   /*********************
+    *   DRAW THE WALL   *
+    *********************/
+    drawWall(hdc);
+
     /**   much like free we use end paint to return        **/
     /**   the device context to the system.  if we         **/
     /**   don't release the DC the resource will be lost   **/
@@ -427,5 +485,6 @@ void cleanUp(){
 
     if(paddleRect)
         free(paddleRect);
-
 }
+
+
