@@ -45,7 +45,7 @@
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
     </ClCompile>
@@ -80,8 +80,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="breakout.h" />
+    <ClInclude Include="convenienceMacros.h" />
     <ClInclude Include="faiza.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="vectors.c" />
+    <ClInclude Include="vectors.h" />
     <ClInclude Include="version.h" />
   </ItemGroup>
   <ItemGroup>

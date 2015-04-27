@@ -3,7 +3,7 @@
 
 
 IDI_MYICON ICON "icon.ico"
-IDW_MYBALLSOUND WAVE "resources\ball.wav"
+IDW_MYBALLSOUND WAVE "resources\\ball.wav"
 
 IDR_VERSION VERSIONINFO
 FILEVERSION RC_FILEVERSION
@@ -17,13 +17,13 @@ BEGIN
     BEGIN
       VALUE "FileVersion", RC_FILEVERSION_STRING
       VALUE "ProductVersion", RC_FILEVERSION_STRING
-      //VALUE "CompanyName", "...\0"
-      VALUE "FileDescription", "WinBreakoutC++ main executable\0"
-      VALUE "InternalName", "breakout\0"
-      VALUE "LegalCopyright", "(c) 2015 Robert Clark et al.\0"
-      VALUE "LegalTrademarks", ".......\0"
-      VALUE "OriginalFilename", "WinBreakoutC++\0"
-      VALUE "ProductName", "WinBreakoutCPlusPlus\0"
+      //VALUE "CompanyName", "..."
+      VALUE "FileDescription", "WinBreakoutC++ main executable"
+      VALUE "InternalName",    "breakout"
+      VALUE "LegalCopyright",  "(c) 2015 Robert Clark et al."
+      VALUE "LegalTrademarks", "......."
+      VALUE "OriginalFilename","WinBreakoutC++"
+      VALUE "ProductName",     "WinBreakoutCPlusPlus"
     END
   END
   BLOCK "VarFileInfo"

@@ -1,0 +1,1 @@
+#define UNREFERENCED(x) (void)(x)
